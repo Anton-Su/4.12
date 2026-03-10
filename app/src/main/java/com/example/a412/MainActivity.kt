@@ -62,25 +62,10 @@ fun Greeting(modifier: Modifier = Modifier, viewModel: viewModelTwelve) {
         modifier = Modifier.fillMaxSize()
     ) {
         Text("Факты о животных!", fontSize = 40.sp, fontWeight = Bold)
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(
-            onClick = {
-                scope.launch {
-                    loading = true
-                    fact = null
-                    viewModel.getRandomFact().collect {
-                        fact = it
-                        loading = false
-                    }
-                }
-
-            }
-        ) {
-            Text("Новый факт!", fontSize = 18.sp)
-        }
         Spacer(modifier = Modifier.height(30.dp))
         if (loading) {
             CircularProgressIndicator()
+            Text("Ищем интересный факт...", fontSize = 16.sp, modifier = Modifier.padding(top = 8.dp))
         }
         // клёво
         fact?.let {
@@ -95,6 +80,23 @@ fun Greeting(modifier: Modifier = Modifier, viewModel: viewModelTwelve) {
                     fontSize = 18.sp
                 )
             }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Button(
+            enabled = !loading,
+            onClick = {
+                scope.launch {
+                    loading = true
+                    fact = null
+                    viewModel.getRandomFact().collect {
+                        fact = it
+                        loading = false
+                    }
+                }
+
+            }
+        ) {
+            Text("Новый факт!", fontSize = 18.sp)
         }
     }
 }
